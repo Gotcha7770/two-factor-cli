@@ -1,4 +1,4 @@
-﻿namespace Two.Factor.Cli;
+﻿namespace Two.Factor.Cli.Store;
 
 public interface ISecretStore
 {

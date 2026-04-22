@@ -4,9 +4,11 @@ using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using JetBrains.Annotations;
 
-namespace Two.Factor.Cli;
+namespace Two.Factor.Cli.Store;
 
+[UsedImplicitly]
 [SupportedOSPlatform("windows")]
 internal class DpapiSecretStore : ISecretStore
 {
@@ -21,7 +23,7 @@ internal class DpapiSecretStore : ISecretStore
     public DpapiSecretStore(IFileSystem fileSystem)
     {
         _fileSystem = fileSystem;
-        var appData = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         var path = fileSystem.Path.Combine(appData, StoreName, FileName);
 
         if (fileSystem.Directory.NotExists(path))

@@ -1,5 +1,6 @@
 ﻿using Spectre.Console;
 using Spectre.Console.Cli;
+using Two.Factor.Cli.Store;
 
 namespace Two.Factor.Cli.Commands;
 

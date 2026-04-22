@@ -1,8 +1,8 @@
 ﻿using System.IO.Abstractions;
 using Spectre.Console;
 using Spectre.Console.Cli;
-using Two.Factor.Cli;
 using Two.Factor.Cli.Commands;
+using Two.Factor.Cli.Store;
 
 var app = new CommandApp();
 
