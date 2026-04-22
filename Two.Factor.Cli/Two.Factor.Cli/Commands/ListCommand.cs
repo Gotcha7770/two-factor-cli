@@ -5,12 +5,12 @@ namespace Two.Factor.Cli.Commands;
 
 public class ListCommand : AsyncCommand<ListCommand.Settings>
 {
-    private readonly IStore _store;
+    private readonly ISecretStore _secretStore;
     private readonly IAnsiConsole _ansiConsole;
 
-    public ListCommand(IStore store, IAnsiConsole ansiConsole)
+    public ListCommand(ISecretStore secretStore, IAnsiConsole ansiConsole)
     {
-        _store = store;
+        _secretStore = secretStore;
         _ansiConsole = ansiConsole;
     }
 
@@ -19,8 +19,8 @@ public class ListCommand : AsyncCommand<ListCommand.Settings>
         Settings settings,
         CancellationToken cancellationToken)
     {
-        await foreach (var item in _store.GetAll().WithCancellation(cancellationToken))
-            _ansiConsole.Markup(item);
+        await foreach (var item in _secretStore.GetAll().WithCancellation(cancellationToken))
+            _ansiConsole.Markup(item.ToString());
 
         return 0;
     }

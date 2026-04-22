@@ -1,6 +1,8 @@
-﻿using Spectre.Console;
+﻿using System.IO.Abstractions;
+using Spectre.Console;
 using Spectre.Console.Cli;
 using Two.Factor.Cli;
+using Two.Factor.Cli.Commands;
 
 var app = new CommandApp();
 
@@ -11,8 +13,18 @@ app.Configure(config =>
     config.ValidateExamples();
 #endif
 
-    config.Settings.Registrar.RegisterInstance<IStore>(new FileSystemStore());
+    config.SetApplicationName("2fa");
+    config.SetApplicationVersion("0.0.1");
+
     config.Settings.Registrar.RegisterInstance(AnsiConsole.Console);
+    config.Settings.Registrar.Register<IFileSystem, FileSystem>();
+    if (OperatingSystem.IsWindows())
+        config.Settings.Registrar.Register<ISecretStore, DpapiSecretStore>();
+    else
+        throw new PlatformNotSupportedException();
+
+    config.AddCommand<ListCommand>("list")
+        .WithDescription("Получить весь список сохраненных секретов текущего пользователя");
 
     config.SetExceptionHandler((ex, _) =>
     {
