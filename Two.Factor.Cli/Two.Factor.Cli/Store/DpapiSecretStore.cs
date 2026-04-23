@@ -34,7 +34,7 @@ internal class DpapiSecretStore : ISecretStore
         _file = fileSystem.FileInfo.New(path);
     }
 
-    public async Task SaveAsync(string key, string secret)
+    public async Task SaveAsync(string key, string secret, CancellationToken cancellationToken = default)
     {
         var data = await LoadAsync();
 
@@ -43,7 +43,7 @@ internal class DpapiSecretStore : ISecretStore
         await SaveFileAsync(data);
     }
 
-    public async Task<TotpEntry> GetAsync(string key)
+    public async Task<TotpEntry> GetAsync(string key, CancellationToken cancellationToken = default)
     {
         var data = await LoadAsync();
 

@@ -1,9 +1,11 @@
-﻿using Spectre.Console;
+﻿using JetBrains.Annotations;
+using Spectre.Console;
 using Spectre.Console.Cli;
 using Two.Factor.Cli.Store;
 
 namespace Two.Factor.Cli.Commands;
 
+[UsedImplicitly]
 public class ListCommand : AsyncCommand<ListCommand.Settings>
 {
     private readonly ISecretStore _secretStore;
@@ -21,7 +23,7 @@ public class ListCommand : AsyncCommand<ListCommand.Settings>
         CancellationToken cancellationToken)
     {
         await foreach (var item in _secretStore.GetAll().WithCancellation(cancellationToken))
-            _ansiConsole.Markup(item.ToString());
+            _ansiConsole.Markup($"[green]{item}[/]");
 
         return 0;
     }

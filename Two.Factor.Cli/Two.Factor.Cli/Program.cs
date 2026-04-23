@@ -23,8 +23,14 @@ app.Configure(config =>
     else
         throw new PlatformNotSupportedException();
 
+    config.AddCommand<AddCommand>("add")
+        .WithDescription("Adds a new totp entry to the store.")
+        .WithExample("add", "github", "PEPTHLLCKWFSFJVCMX7QNHITRM2PDS3G");
     config.AddCommand<ListCommand>("list")
-        .WithDescription("Получить весь список сохраненных секретов текущего пользователя");
+        .WithDescription("Get the full list of saved totp entries for the current user.");
+    config.AddCommand<GenerateCommand>("gen")
+        .WithDescription("Generates totp code for given key")
+        .WithExample("gen", "github");
 
     config.SetExceptionHandler((ex, _) =>
     {
