@@ -10,6 +10,7 @@ The tool is designed for developers and power users who prefer a fast, scriptabl
 - Generate time-based one-time passwords from the terminal
 - List saved 2FA entries
 - Add new entries through a simple CLI interface
+- Remove saved entries
 - Designed to be distributed and installed as a .NET global tool
 
 ## Installation
@@ -43,6 +44,6 @@ After installation, the tool can be used from the command line:
 
 ## Notes
 
-This project is intended to be packaged and distributed as a .NET tool, making installation and updates straightforward for users who work with the .NET ecosystem.
+Currently, the tool is supported only on Windows.
 
 [1]: https://learn.microsoft.com/en-us/dotnet/core/tools/global-tools-how-to-create
