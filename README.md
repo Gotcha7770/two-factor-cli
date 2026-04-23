@@ -18,6 +18,19 @@ The recommended way to install Two.Factor.Cli is via [dotnet tool][1]:
 ```ps
 dotnet tool install --global 2fa
 ```
+
+## Local Installation
+Run
+```ps
+dotnet pack
+```
+in Solution folder
+
+```ps
+dotnet tool install -g Two.Factor.Cli --add-source <path/to/nupkg/file/created/in/previous/step>
+```
+Ommit `-g` if you don`t want to install tool globally
+
 ## Usage
 
 After installation, the tool can be used from the command line:
