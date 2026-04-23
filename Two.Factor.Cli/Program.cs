@@ -34,6 +34,9 @@ app.Configure(config =>
     config.AddCommand<GenerateCommand>("gen")
         .WithDescription("Generates totp code for given key")
         .WithExample("gen", "github");
+    config.AddCommand<RemoveCommand>("remove")
+        .WithDescription("Removes a totp entry from the store.")
+        .WithExample("remove", "github");
 
     config.SetExceptionHandler((ex, _) =>
     {
