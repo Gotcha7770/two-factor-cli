@@ -27,7 +27,7 @@ dotnet pack
 in Solution folder
 
 ```ps
-dotnet tool install -g Two.Factor.Cli --add-source <path/to/nupkg/file/created/in/previous/step>
+dotnet tool install -g Two.Factor.Cli --add-source %path/to/nupkg/file/created/in/previous/step%
 ```
 Ommit `-g` if you don`t want to install tool globally
 
