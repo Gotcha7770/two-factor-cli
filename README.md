@@ -14,7 +14,7 @@ The tool is designed for developers and power users who prefer a fast, scriptabl
 
 ## Installation
 
-The recommended way to install Two.Factor.Cli is via `dotnet tool`:
+The recommended way to install Two.Factor.Cli is via [dotnet tool][1]:
 ```ps
 dotnet tool install --global 2fa
 ```
@@ -31,3 +31,5 @@ After installation, the tool can be used from the command line:
 ## Notes
 
 This project is intended to be packaged and distributed as a .NET tool, making installation and updates straightforward for users who work with the .NET ecosystem.
+
+[1]: https://learn.microsoft.com/en-us/dotnet/core/tools/global-tools-how-to-create
