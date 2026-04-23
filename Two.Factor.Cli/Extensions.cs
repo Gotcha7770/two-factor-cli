@@ -1,4 +1,5 @@
 ﻿using System.IO.Abstractions;
+using System.Reflection;
 
 namespace Two.Factor.Cli;
 
@@ -19,6 +20,16 @@ public static class Extensions
         public static IAsyncEnumerable<T> Create<T>(Func<CancellationToken, IAsyncEnumerator<T>> factory)
         {
             return new AnonymousAsyncEnumerable<T>(factory);
+        }
+    }
+
+    extension(Assembly assembly)
+    {
+        public string GetVersion()
+        {
+            var attribute = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+
+            return attribute?.InformationalVersion ?? "0.0.1";
         }
     }
 }

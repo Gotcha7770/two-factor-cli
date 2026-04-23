@@ -1,6 +1,8 @@
 ﻿using System.IO.Abstractions;
+using System.Reflection;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using Two.Factor.Cli;
 using Two.Factor.Cli.Commands;
 using Two.Factor.Cli.Store;
 
@@ -14,7 +16,8 @@ app.Configure(config =>
 #endif
 
     config.SetApplicationName("2fa");
-    config.SetApplicationVersion("0.0.1");
+    var version = Assembly.GetExecutingAssembly().GetVersion();
+    config.SetApplicationVersion(version);
 
     config.Settings.Registrar.RegisterInstance(AnsiConsole.Console);
     config.Settings.Registrar.Register<IFileSystem, FileSystem>();
