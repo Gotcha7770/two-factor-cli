@@ -22,8 +22,14 @@ public class ListCommand : AsyncCommand<ListCommand.Settings>
         Settings settings,
         CancellationToken cancellationToken)
     {
-        await foreach (var item in _secretStore.GetAll().WithCancellation(cancellationToken))
+        var items = _secretStore.GetAll()
+            .Select(x => x.Name)
+            .DefaultIfEmpty("- No items stored -");
+
+        await foreach (var item in items.WithCancellation(cancellationToken))
+        {
             _ansiConsole.Markup($"[green]{item}[/]");
+        }
 
         return 0;
     }
