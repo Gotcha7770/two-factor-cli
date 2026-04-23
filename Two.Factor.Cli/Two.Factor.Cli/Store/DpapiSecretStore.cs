@@ -24,12 +24,14 @@ internal class DpapiSecretStore : ISecretStore
     {
         _fileSystem = fileSystem;
         var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var path = fileSystem.Path.Combine(appData, StoreName, FileName);
+        var directory = fileSystem.Path.Combine(appData, StoreName);
 
-        if (fileSystem.Directory.NotExists(path))
+        if (fileSystem.Directory.NotExists(directory))
         {
-            fileSystem.Directory.CreateDirectory(path);
+            fileSystem.Directory.CreateDirectory(directory);
         }
+
+        var path = fileSystem.Path.Combine(directory, FileName);
 
         _file = fileSystem.FileInfo.New(path);
     }
