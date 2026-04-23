@@ -24,7 +24,7 @@ public class GenerateCommand : AsyncCommand<GenerateCommand.Settings>
         Settings settings,
         CancellationToken cancellationToken)
     {
-        var entry = await _secretStore.GetAsync(settings.Name, cancellationToken);
+        var entry = await _secretStore.Get(settings.Name, cancellationToken);
 
         byte[] secretBytes = Base32Encoding.ToBytes(entry.Secret);
         var totp = new Totp(secretBytes);

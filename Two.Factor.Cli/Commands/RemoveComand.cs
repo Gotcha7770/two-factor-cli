@@ -7,12 +7,12 @@ using Two.Factor.Cli.Store;
 namespace Two.Factor.Cli.Commands;
 
 [UsedImplicitly]
-public class AddCommand : AsyncCommand<AddCommand.Settings>
+public class RemoveCommand : AsyncCommand<RemoveCommand.Settings>
 {
     private readonly ISecretStore _secretStore;
     private readonly IAnsiConsole _ansiConsole;
 
-    public AddCommand(ISecretStore secretStore, IAnsiConsole ansiConsole)
+    public RemoveCommand(ISecretStore secretStore, IAnsiConsole ansiConsole)
     {
         _secretStore = secretStore;
         _ansiConsole = ansiConsole;
@@ -23,20 +23,16 @@ public class AddCommand : AsyncCommand<AddCommand.Settings>
         Settings settings,
         CancellationToken cancellationToken)
     {
-        await _secretStore.Save(settings.Name, settings.Secret, cancellationToken);
+        await _secretStore.Remove(settings.Name, cancellationToken);
 
-        _ansiConsole.MarkupLine("[green]Key saved successfully[/]");
+        _ansiConsole.MarkupLine("[green]Key removed successfully[/]");
         return 0;
     }
 
     public class Settings : CommandSettings
     {
         [CommandArgument(0, "<name>")]
-        [Description("Name of secret to store with")]
+        [Description("Name of secret to remove")]
         public string Name { get; init; }
-
-        [CommandArgument(1, "<secret>")]
-        [Description("Secret")]
-        public string Secret { get; init; }
     }
 }

@@ -36,18 +36,18 @@ internal class DpapiSecretStore : ISecretStore
         _file = fileSystem.FileInfo.New(path);
     }
 
-    public async Task SaveAsync(string key, string secret, CancellationToken cancellationToken = default)
+    public async Task Save(string key, string secret, CancellationToken cancellationToken = default)
     {
-        var data = await LoadAsync();
+        var data = await LoadData(cancellationToken);
 
         data[key] = Encrypt(secret);
 
-        await SaveFileAsync(data);
+        await SaveFile(data, cancellationToken);
     }
 
-    public async Task<TotpEntry> GetAsync(string key, CancellationToken cancellationToken = default)
+    public async Task<TotpEntry> Get(string key, CancellationToken cancellationToken = default)
     {
-        var data = await LoadAsync();
+        var data = await LoadData(cancellationToken);
 
         if (!data.TryGetValue(key, out var encrypted))
             return null;
@@ -61,15 +61,24 @@ internal class DpapiSecretStore : ISecretStore
     {
         return AsyncEnumerable.Create(Iterator);
 
-        async IAsyncEnumerator<TotpEntry> Iterator(CancellationToken cancellation)
+        async IAsyncEnumerator<TotpEntry> Iterator(CancellationToken cancellationToken)
         {
-            var data = await LoadAsync();
+            var data = await LoadData(cancellationToken);
 
             foreach (var entry in data)
             {
                 yield return new TotpEntry { Name = entry.Key, Secret = entry.Value };
             }
         }
+    }
+
+    public async Task Remove(string key, CancellationToken cancellationToken = default)
+    {
+        var data = await LoadData(cancellationToken);
+
+        data.Remove(key);
+
+        await SaveFile(data, cancellationToken);
     }
 
     private string Encrypt(string secret)
@@ -96,24 +105,24 @@ internal class DpapiSecretStore : ISecretStore
         return Encoding.UTF8.GetString(unprotectedBytes);
     }
 
-    private async Task<Dictionary<string, string>> LoadAsync()
+    private async Task<Dictionary<string, string>> LoadData(CancellationToken cancellationToken)
     {
         if (_file.NotExists)
             return new Dictionary<string, string>();
 
         await using var stream = _file.OpenRead();
-        var data = await JsonSerializer.DeserializeAsync<Dictionary<string, string>>(stream);
+        var data = await JsonSerializer.DeserializeAsync<Dictionary<string, string>>(stream, cancellationToken: cancellationToken);
 
         return data ?? new Dictionary<string, string>();
     }
 
-    private async Task SaveFileAsync(Dictionary<string, string> data)
+    private async Task SaveFile(Dictionary<string, string> data, CancellationToken cancellationToken)
     {
         var tempFile = _file.FullName + ".tmp";
 
         await using (var stream = _fileSystem.File.Create(tempFile))
         {
-            await JsonSerializer.SerializeAsync(stream, data, SerializerOptions);
+            await JsonSerializer.SerializeAsync(stream, data, SerializerOptions, cancellationToken);
         }
 
         _fileSystem.File.Move(tempFile, _file.FullName, overwrite: true);
